@@ -1,7 +1,8 @@
 import { observer } from 'mobx-react';
 import React from 'react';
 
-import { CircleSpinner } from './spinners/CircleSpinner';
+import { BarLoader } from './loaders/BarLoader';
+import { CircleSpinner } from './loaders/CircleSpinner';
 
 import './app.scss';
 
@@ -11,6 +12,7 @@ export class App extends React.PureComponent {
     return (
       <div className={'spinners'}>
         <CircleSpinner />
+        <BarLoader />
       </div>
     );
   }
