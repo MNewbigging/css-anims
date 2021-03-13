@@ -1,0 +1,70 @@
+@import '../app-variables.scss';
+
+.circle-spinners {
+  display: flex;
+
+  .spinner {
+    margin: 50px;
+    width: $spinner-width;
+    height: $spinner-height;
+    border-radius: 50%;
+    border: 2px solid gainsboro;
+    border-top: 3px solid rgb(248, 162, 48);
+
+    &.basic {
+      animation: spin 1.2s linear infinite;
+    }
+
+    &.woosh {
+      animation: woosh 1.2s ease-in-out infinite;
+    }
+
+    &.snap {
+      animation: snap 2.5s linear infinite;
+    }
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes woosh {
+  0% {
+    transform: rotate(0deg);
+  }
+  80% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes snap {
+  0% {
+    border: 2px solid gainsboro;
+    border-top: 3px solid rgb(248, 162, 48);
+  }
+  25% {
+    border: 2px solid gainsboro;
+    border-right: 3px solid rgb(248, 162, 48);
+  }
+  50% {
+    border: 2px solid gainsboro;
+    border-bottom: 3px solid rgb(248, 162, 48);
+  }
+  75% {
+    border: 2px solid gainsboro;
+    border-left: 3px solid rgb(248, 162, 48);
+  }
+  100% {
+    border: 2px solid gainsboro;
+    border-top: 3px solid rgb(248, 162, 48);
+  }
+}
