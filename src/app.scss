@@ -15,9 +15,16 @@ body {
 .panels {
   width: 100%;
   overflow-y: auto;
+  overflow-x: hidden;
 
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  .panel {
+    width: 500px;
+    border-radius: 5px;
+    margin: 50px;
+  }
 }
