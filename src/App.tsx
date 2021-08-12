@@ -1,8 +1,7 @@
 import { observer } from 'mobx-react';
 import React from 'react';
 
-import { BarLoader } from './loaders/BarLoader';
-import { CircleSpinner } from './loaders/CircleSpinner';
+import { Loaders } from './loaders/Loaders';
 
 import './app.scss';
 
@@ -10,9 +9,8 @@ import './app.scss';
 export class App extends React.PureComponent {
   public render() {
     return (
-      <div className={'spinners'}>
-        <CircleSpinner />
-        <BarLoader />
+      <div className={'panels'}>
+        <Loaders />
       </div>
     );
   }

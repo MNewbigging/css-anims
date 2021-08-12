@@ -12,10 +12,9 @@ body {
   height: 100vh;
 }
 
-.spinners {
+.panels {
   width: 100%;
-  height: 100%;
-  background-color: #59488b;
+  overflow-y: auto;
 
   display: flex;
   flex-direction: column;
