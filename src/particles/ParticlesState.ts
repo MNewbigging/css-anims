@@ -23,6 +23,9 @@ export class Particle {
     this.position.x += this.velocity.x * dt;
     this.position.y += this.velocity.y * dt;
     this.age += dt;
+
+    // As it gets older, particle veers right
+    this.velocity.x += this.age / 30;
   }
 }
 
@@ -32,10 +35,9 @@ export class ParticlesState {
   private readonly canvasCtx: CanvasRenderingContext2D;
   private readonly startPos: Vec2;
   private particleImage: HTMLImageElement;
-  private readonly maxParticles = 1;
   private lastFrameTime: number;
   private addCounter: number = 0;
-  private addDelay: number = 0.5;
+  private addDelay: number = 0.7;
 
   constructor(canvas: HTMLCanvasElement, startPos: Vec2) {
     this.canvas = canvas;
@@ -64,6 +66,9 @@ export class ParticlesState {
     // Clear canvas
     this.canvasCtx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
+    // Draw the house
+    this.drawHouse();
+
     // Do we need to add more particles?
     if (this.addCounter >= this.addDelay) {
       this.addParticle();
@@ -84,7 +89,7 @@ export class ParticlesState {
 
   private addParticle() {
     const lifespan = 5;
-    const pos = new Vec2(this.startPos.x - 25, this.startPos.y - 25);
+    const pos = new Vec2(this.startPos.x - 2.5, this.startPos.y - 50);
     const vel = new Vec2(0, -10);
     const rot = Math.floor(Math.random() * 360);
 
@@ -126,5 +131,59 @@ export class ParticlesState {
     ctx.drawImage(this.particleImage, -25, -25, 50, 50);
 
     ctx.restore();
+  }
+
+  private drawHouse() {
+    const ctx = this.canvasCtx;
+
+    const houseWidth = 100;
+    const houseHeight = 60;
+    const houseLeft = this.canvas.width / 2 - houseWidth / 2;
+    const houseYOffset = 85;
+    const houseMid = houseLeft + houseWidth / 2;
+    const houseRight = houseLeft + houseWidth;
+
+    // Main house body
+    ctx.beginPath();
+    ctx.rect(houseLeft, houseYOffset, houseWidth, houseHeight);
+    ctx.stroke();
+    ctx.fillStyle = '#ccb494';
+    ctx.fill();
+
+    // Door
+    ctx.beginPath();
+    ctx.rect(houseMid - 10, houseYOffset + 30, 20, 30);
+    ctx.fillStyle = '#795644';
+    ctx.fill();
+
+    // Window left
+    ctx.beginPath();
+    ctx.rect(houseLeft + 10, houseYOffset + 8, 20, 20);
+    ctx.fillStyle = '#b3e5fc';
+    ctx.fill();
+
+    // Window right
+    ctx.beginPath();
+    ctx.rect(houseLeft + 70, houseYOffset + 8, 20, 20);
+    ctx.fillStyle = '#b3e5fc';
+    ctx.fill();
+
+    // Chimney
+    const chimneyLeft = houseMid + 10;
+    ctx.beginPath();
+    ctx.rect(chimneyLeft + 5, houseYOffset - 25, 15, 15);
+    ctx.stroke();
+    ctx.fillStyle = '#c38452';
+    ctx.fill();
+
+    // Roof
+    ctx.beginPath();
+    ctx.moveTo(houseLeft, houseYOffset);
+    ctx.lineTo(houseMid, houseYOffset - 30);
+    ctx.lineTo(houseRight, houseYOffset);
+    ctx.strokeStyle = '#663e2e';
+    ctx.stroke();
+    ctx.fillStyle = '#663e2e';
+    ctx.fill();
   }
 }
