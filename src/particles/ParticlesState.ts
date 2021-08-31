@@ -44,10 +44,17 @@ export class ParticlesState {
     this.canvasCtx = canvas.getContext('2d');
     this.startPos = startPos;
 
-    // Setup the image for the particle
-    // TODO - should be a parameter
+    // Asset link depends on running local/published
+    const location = window.location.href;
+    let path = '';
+    if (location.includes('localhost')) {
+      path = 'dist/assets/smoke_01.png';
+    } else {
+      path = 'assets/smoke_01.png';
+    }
+
     const image = new Image();
-    image.src = window.location + '/src/particles/smoke_01.png';
+    image.src = window.location + path;
     image.width = 2;
     image.height = 2;
     image.onload = () => {
