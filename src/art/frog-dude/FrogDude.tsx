@@ -14,7 +14,7 @@ export class FrogDude extends React.Component {
 
   componentDidMount() {
     if (this.panelRef.current && this.leftEyeRef.current) {
-      this.frogState = new FrogDudeState(this.panelRef.current, this.leftEyeRef.current);
+      this.frogState = new FrogDudeState(this.panelRef.current, [this.leftEyeRef.current]);
     }
   }
 
