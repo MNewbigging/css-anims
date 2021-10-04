@@ -1,28 +1,48 @@
 import { observable } from 'mobx';
 
+interface Eye {
+  element: HTMLDivElement;
+}
+
 export class FrogDudeState {
-  private panelElement: HTMLDivElement;
-  private panelRect: DOMRect;
+  private panel: HTMLDivElement;
+  private eyes: HTMLDivElement[] = [];
 
-  @observable public x = 0;
-  @observable public y = 0;
+  constructor(panelElement: HTMLDivElement, leftEye: HTMLDivElement) {
+    this.panel = panelElement;
 
-  constructor(panelElement: HTMLDivElement) {
-    this.panelElement = panelElement;
-    this.panelRect = panelElement.getBoundingClientRect();
+    this.eyes.push(leftEye);
 
-    this.panelElement.addEventListener('mousemove', this.onMouseMove);
+    this.panel.addEventListener('mousemove', this.onMouseMove);
   }
 
   private readonly onMouseMove = (e: MouseEvent) => {
-    const x = e.clientX - this.panelRect.left;
-    const y = e.clientY - this.panelRect.top;
+    const panelRect = this.panel.getBoundingClientRect();
+    console.log('pRect', panelRect);
 
-    const tx = (e.clientX * 100) / this.panelRect.width;
-    const ty = (e.clientY * 100) / this.panelRect.height;
+    console.log(`x: ${e.clientX} y: ${e.clientY}`);
 
-    const eye = document.getElementById('eye');
-    eye.style.top = ty + '%';
-    eye.style.left = tx + '%';
+    const px = e.clientX - panelRect.left;
+    const py = e.clientY - panelRect.top;
+
+    console.log(`px: ${px} py: ${py}`);
+
+    this.eyes.forEach((eye) => {
+      const eyeRect = eye.getBoundingClientRect();
+
+      const ex = (px * 80) / panelRect.width + eyeRect.width / 2;
+      const ey = (py * 80) / panelRect.height + eyeRect.height / 2;
+
+      eye.style.left = ex + '%';
+      eye.style.top = ey + '%';
+    });
   };
+
+  private adjustEye(mouseX: number, mouseY: number, eye: HTMLDivElement) {
+    const ex = (mouseX * 100) / window.innerWidth;
+    const ey = (mouseY * 100) / window.innerHeight;
+
+    eye.style.left = ex + '%';
+    eye.style.top = ey + '%';
+  }
 }

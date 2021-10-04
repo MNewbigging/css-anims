@@ -8,17 +8,19 @@ import './frog-dude.scss';
 @observer
 export class FrogDude extends React.Component {
   private frogState: FrogDudeState;
-  private ref = React.createRef<HTMLDivElement>();
+  private panelRef = React.createRef<HTMLDivElement>();
+  private leftEyeRef = React.createRef<HTMLDivElement>();
+  private rightEyeRef = React.createRef<HTMLDivElement>();
 
   componentDidMount() {
-    if (this.ref.current) {
-      this.frogState = new FrogDudeState(this.ref.current);
+    if (this.panelRef.current && this.leftEyeRef.current) {
+      this.frogState = new FrogDudeState(this.panelRef.current, this.leftEyeRef.current);
     }
   }
 
   public render() {
     return (
-      <div ref={this.ref} className={'frog-dude panel'}>
+      <div ref={this.panelRef} className={'frog-dude panel'}>
         {this.renderEye()}
       </div>
     );
@@ -27,7 +29,7 @@ export class FrogDude extends React.Component {
   private renderEye() {
     return (
       <div className={'eye'}>
-        <div id={'eye'} className={'iris'}></div>
+        <div ref={this.leftEyeRef} className={'iris'}></div>
       </div>
     );
   }
