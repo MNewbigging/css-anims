@@ -8,6 +8,7 @@ import { Loaders } from './loaders/Loaders';
 import { Particles } from './particles/Particles';
 
 import './app.scss';
+import { FrogDude } from './art/frog-dude/FrogDude';
 
 @observer
 export class App extends React.PureComponent {
@@ -19,6 +20,7 @@ export class App extends React.PureComponent {
         <XmasLights />
         <Particles />
         <ColourClock />
+        <FrogDude />
       </div>
     );
   }
