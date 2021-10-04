@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react';
 import React from 'react';
 
-import { FrogDudeState } from './FrogDudeState';
+import { EyeElements, FrogDudeState } from './FrogDudeState';
 
 import './frog-dude.scss';
 
@@ -9,19 +9,28 @@ import './frog-dude.scss';
 export class FrogDude extends React.Component {
   private frogState: FrogDudeState;
   private panelRef = React.createRef<HTMLDivElement>();
-  private leftEyeRef = React.createRef<HTMLDivElement>();
+  private irisRef = React.createRef<HTMLDivElement>();
+  private socketRef = React.createRef<HTMLDivElement>();
   private rightEyeRef = React.createRef<HTMLDivElement>();
 
   componentDidMount() {
-    if (this.panelRef.current && this.leftEyeRef.current) {
-      this.frogState = new FrogDudeState(this.panelRef.current, [this.leftEyeRef.current]);
-    }
+    // Setup eye data
+    const eyeElements: EyeElements = {
+      socket: this.socketRef.current,
+      iris: this.irisRef.current,
+    };
+
+    this.frogState = new FrogDudeState(this.panelRef.current, [eyeElements]);
   }
 
   public render() {
     return (
       <div ref={this.panelRef} className={'frog-dude panel'}>
-        {this.renderEye()}
+        <div className={'eye-socket left'}>
+          <div ref={this.socketRef} className={'eye'}>
+            <div ref={this.irisRef} className={'iris'}></div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -29,7 +38,7 @@ export class FrogDude extends React.Component {
   private renderEye() {
     return (
       <div className={'eye'}>
-        <div ref={this.leftEyeRef} className={'iris'}></div>
+        <div ref={this.irisRef} className={'iris'}></div>
       </div>
     );
   }
