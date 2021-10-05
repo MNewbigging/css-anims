@@ -7,14 +7,13 @@
   align-items: center;
   justify-content: center;
 
-  .eye-socket {
+  .eye {
+    width: 100px;
+    height: 100px;
     position: absolute;
-
-    &.left {
-      left: 0;
-    }
-
-    .eye {
+    bottom: 40px;
+    left: 40px;
+    .socket {
       position: relative;
       width: 100px;
       height: 100px;

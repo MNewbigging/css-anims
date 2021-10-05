@@ -7,48 +7,47 @@ export interface EyeElements {
 
 interface Eye {
   iris: HTMLDivElement;
-  width: number;
-  height: number;
-  halfWidth: number;
-  halfHeight: number;
   originX: number;
   originY: number;
+  range: number;
 }
 
 export class FrogDudeState {
   private panel: HTMLDivElement;
   private eyes: Eye[] = [];
 
-  constructor(panelElement: HTMLDivElement, eyeElements: EyeElements[]) {
+  constructor(panelElement: HTMLDivElement, eyeNames: string[]) {
     this.panel = panelElement;
     const panelRect = panelElement.getBoundingClientRect();
 
-    eyeElements.forEach((element) => {
-      const socket = element.socket.getBoundingClientRect();
-      // const originX = socket.left - socket.width / 2 - panelRect.left;
-      // const originY = socket.top + socket.height / 2 - panelRect.top;
+    eyeNames.forEach((name) => {
+      // Get the socket element for this eye and its bounds
+      const socket = document.getElementById(`${name}-socket`);
+      const socketRect = socket.getBoundingClientRect();
 
-      const originX = socket.left - panelRect.left - socket.width / 2;
-      const originY = socket.top - panelRect.top - socket.height / 2;
-      console.log('socket width:', socket.width);
+      // Find the center point for the socket
+      const originX = socketRect.left - panelRect.left + socketRect.width / 2;
+      const originY = socketRect.top - panelRect.top + socketRect.height / 2;
+
       console.log(`originX: ${originX} originY: ${originY}`);
 
-      const iris = element.iris.getBoundingClientRect();
-      const halfWidth = iris.width / 2;
-      const halfHeight = iris.height / 2;
+      // Create the eye range
+      const range = socketRect.width * 3;
+
+      // Get the iris
+      const iris = document.getElementById(`${name}-iris`) as HTMLDivElement;
 
       this.eyes.push({
-        iris: element.iris,
-        width: iris.width,
-        height: iris.height,
-        halfWidth,
-        halfHeight,
+        iris,
         originX,
         originY,
+        range,
       });
+
+      console.log('eyes', this.eyes);
     });
 
-    this.panel.addEventListener('mousemove', this.onMouseMove);
+    this.panel.addEventListener('mousemove', this.onMoveMouse);
   }
 
   private readonly onMouseMove = (e: MouseEvent) => {
@@ -63,8 +62,8 @@ export class FrogDudeState {
      */
 
     this.eyes.forEach((eye) => {
-      const ex = (px * 80) / panelRect.width + eye.halfWidth;
-      const ey = (py * 80) / panelRect.height + eye.halfHeight;
+      const ex = (px * 80) / panelRect.width; // + eye.halfWidth;
+      const ey = (py * 80) / panelRect.height; // + eye.halfHeight;
 
       eye.iris.style.left = ex + '%';
       eye.iris.style.top = ey + '%';
@@ -83,23 +82,39 @@ export class FrogDudeState {
     console.log(`mx: ${mx} my: ${my}`);
 
     this.eyes.forEach((eye) => {
-      // Get difference of eye to mouse pos
+      // Get distance from mouse to eye
       const dx = mx - eye.originX;
       const dy = my - eye.originY;
 
+      // Distance relative to eye range; dist as percentage of range
+      const rx = (dx / eye.range) * 100;
+      const ry = (dy / eye.range) * 100;
+
       console.log(`dx: ${dx} dy: ${dy}`);
 
-      // How many eye-lengths is the difference?
-      const left = (dx / eye.width) * 10;
-      const top = (dy / eye.height) * 10;
+      // If range percentage is less than 100 (i.e in range), move eyes
+      // by 50 (midpoint) + range percentage, up to max
+      // if (rx > 100) {
+      //   const left = 50;
+      // }
 
-      // Adjust for max value
-      const leftAdj = left < 100 ? left : 70;
+      // Adjust for center pos with 50%
+      const cx = 50 + rx;
+      const cy = 50 + ry;
+
+      // Cannot be bigger than 90 or smaller than 0
+      let left = 50;
+      let top = 50;
+
+      if (cx > 0 && cx < 90 && cy > 0 && cy < 90) {
+        left = cx;
+        top = cy;
+      }
+
+      console.log(`left: ${left} top:${top}`);
 
       eye.iris.style.left = left + '%';
-      //eye.iris.style.top = dy + '%';
-
-      console.log(`left: ${left} top: ${top}`);
+      eye.iris.style.top = top + '%';
     });
   };
 }

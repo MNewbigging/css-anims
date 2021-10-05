@@ -9,36 +9,26 @@ import './frog-dude.scss';
 export class FrogDude extends React.Component {
   private frogState: FrogDudeState;
   private panelRef = React.createRef<HTMLDivElement>();
-  private irisRef = React.createRef<HTMLDivElement>();
-  private socketRef = React.createRef<HTMLDivElement>();
-  private rightEyeRef = React.createRef<HTMLDivElement>();
+  private eyeNames: string[] = ['test'];
 
   componentDidMount() {
-    // Setup eye data
-    const eyeElements: EyeElements = {
-      socket: this.socketRef.current,
-      iris: this.irisRef.current,
-    };
-
-    this.frogState = new FrogDudeState(this.panelRef.current, [eyeElements]);
+    this.frogState = new FrogDudeState(this.panelRef.current, this.eyeNames);
   }
 
   public render() {
     return (
       <div ref={this.panelRef} className={'frog-dude panel'}>
-        <div className={'eye-socket left'}>
-          <div ref={this.socketRef} className={'eye'}>
-            <div ref={this.irisRef} className={'iris'}></div>
-          </div>
-        </div>
+        {this.eyeNames.map((name) => this.renderEye(name))}
       </div>
     );
   }
 
-  private renderEye() {
+  private renderEye(name: string) {
     return (
-      <div className={'eye'}>
-        <div ref={this.irisRef} className={'iris'}></div>
+      <div key={name} className={'eye'}>
+        <div id={name + '-socket'} className={name + ' socket'}>
+          <div id={name + '-iris'} className={'iris'}></div>
+        </div>
       </div>
     );
   }
