@@ -7,12 +7,36 @@
   align-items: center;
   justify-content: center;
 
+  .body {
+    width: 240px;
+    height: 240px;
+    border-radius: 50% 50% 20px 20px;
+    //border: 1px solid black;
+    background-color: rgb(31, 90, 117);
+  }
+
+  .mouth {
+    position: absolute;
+    top: 230px;
+    width: 60px;
+    height: 20px;
+    background-color: black;
+    border-radius: 6px 6px 70% 70%;
+  }
+
   .eye {
     width: 100px;
     height: 100px;
     position: absolute;
-    bottom: 40px;
-    right: 0px;
+    top: 130px;
+
+    &.left {
+      left: 120px;
+    }
+    &.right {
+      right: 120px;
+    }
+
     .socket {
       position: relative;
       width: 100px;

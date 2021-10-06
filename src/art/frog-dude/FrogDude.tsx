@@ -9,7 +9,7 @@ import './frog-dude.scss';
 export class FrogDude extends React.Component {
   private frogState: FrogDudeState;
   private panelRef = React.createRef<HTMLDivElement>();
-  private eyeNames: string[] = ['test'];
+  private eyeNames: string[] = ['left', 'right'];
 
   componentDidMount() {
     this.frogState = new FrogDudeState(this.panelRef.current, this.eyeNames);
@@ -18,6 +18,8 @@ export class FrogDude extends React.Component {
   public render() {
     return (
       <div ref={this.panelRef} className={'frog-dude panel'}>
+        <div className={'body'}></div>
+        <div className={'mouth'}></div>
         {this.eyeNames.map((name) => this.renderEye(name))}
       </div>
     );
@@ -25,7 +27,7 @@ export class FrogDude extends React.Component {
 
   private renderEye(name: string) {
     return (
-      <div key={name} className={'eye'}>
+      <div key={name} className={name + ' eye'}>
         <div id={name + '-socket'} className={name + ' socket'}>
           <div id={name + '-iris'} className={'iris'}></div>
         </div>

@@ -79,8 +79,10 @@ export class FrogDudeState {
       const cy = 50 + ry;
 
       // Clamp values within 0 and 90
-      const left = this.clamp(0, 90, cx);
-      const top = this.clamp(0, 90, cy);
+      const min = 0;
+      const max = 80;
+      const left = this.clamp(min, max, cx);
+      const top = this.clamp(min, max, cy);
 
       console.log(`left: ${left} top:${top}`);
 
