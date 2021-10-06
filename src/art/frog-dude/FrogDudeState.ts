@@ -10,6 +10,8 @@ interface Eye {
   originX: number;
   originY: number;
   range: number;
+  left: number;
+  top: number;
 }
 
 export class FrogDudeState {
@@ -42,37 +44,17 @@ export class FrogDudeState {
         originX,
         originY,
         range,
+        left: 50,
+        top: 50,
       });
 
       console.log('eyes', this.eyes);
     });
 
-    this.panel.addEventListener('mousemove', this.onMoveMouse);
+    this.panel.addEventListener('mousemove', this.onMouseMove);
   }
 
   private readonly onMouseMove = (e: MouseEvent) => {
-    const panelRect = this.panel.getBoundingClientRect();
-
-    const px = e.clientX - panelRect.left;
-    const py = e.clientY - panelRect.top;
-
-    /**
-     * TODO
-     * Here I should translate px, py by same translation the eye origin is from px and py
-     */
-
-    this.eyes.forEach((eye) => {
-      const ex = (px * 80) / panelRect.width; // + eye.halfWidth;
-      const ey = (py * 80) / panelRect.height; // + eye.halfHeight;
-
-      eye.iris.style.left = ex + '%';
-      eye.iris.style.top = ey + '%';
-
-      console.log(`left: ${ex} top: ${ey}`);
-    });
-  };
-
-  private readonly onMoveMouse = (e: MouseEvent) => {
     const panelRect = this.panel.getBoundingClientRect();
 
     // Get mouse pos within panel
@@ -92,24 +74,13 @@ export class FrogDudeState {
 
       console.log(`dx: ${dx} dy: ${dy}`);
 
-      // If range percentage is less than 100 (i.e in range), move eyes
-      // by 50 (midpoint) + range percentage, up to max
-      // if (rx > 100) {
-      //   const left = 50;
-      // }
-
       // Adjust for center pos with 50%
       const cx = 50 + rx;
       const cy = 50 + ry;
 
-      // Cannot be bigger than 90 or smaller than 0
-      let left = 50;
-      let top = 50;
-
-      if (cx > 0 && cx < 90 && cy > 0 && cy < 90) {
-        left = cx;
-        top = cy;
-      }
+      // Clamp values within 0 and 90
+      const left = this.clamp(0, 90, cx);
+      const top = this.clamp(0, 90, cy);
 
       console.log(`left: ${left} top:${top}`);
 
@@ -117,4 +88,8 @@ export class FrogDudeState {
       eye.iris.style.top = top + '%';
     });
   };
+
+  private clamp(min: number, max: number, value: number) {
+    return Math.min(Math.max(value, min), max);
+  }
 }
