@@ -31,8 +31,6 @@ export class FrogDudeState {
       const originX = socketRect.left - panelRect.left + socketRect.width / 2;
       const originY = socketRect.top - panelRect.top + socketRect.height / 2;
 
-      console.log(`originX: ${originX} originY: ${originY}`);
-
       // Create the eye range
       const range = socketRect.width * 3;
 
@@ -47,8 +45,6 @@ export class FrogDudeState {
         left: 50,
         top: 50,
       });
-
-      console.log('eyes', this.eyes);
     });
 
     this.panel.addEventListener('mousemove', this.onMouseMove);
@@ -61,8 +57,6 @@ export class FrogDudeState {
     const mx = e.clientX - panelRect.left;
     const my = e.clientY - panelRect.top;
 
-    console.log(`mx: ${mx} my: ${my}`);
-
     this.eyes.forEach((eye) => {
       // Get distance from mouse to eye
       const dx = mx - eye.originX;
@@ -71,8 +65,6 @@ export class FrogDudeState {
       // Distance relative to eye range; dist as percentage of range
       const rx = (dx / eye.range) * 100;
       const ry = (dy / eye.range) * 100;
-
-      console.log(`dx: ${dx} dy: ${dy}`);
 
       // Adjust for center pos with 50%
       const cx = 50 + rx;
@@ -83,8 +75,6 @@ export class FrogDudeState {
       const max = 80;
       const left = this.clamp(min, max, cx);
       const top = this.clamp(min, max, cy);
-
-      console.log(`left: ${left} top:${top}`);
 
       eye.iris.style.left = left + '%';
       eye.iris.style.top = top + '%';
